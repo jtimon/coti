@@ -30,3 +30,25 @@ pub fn input_u32(input_min: u32, input_max: u32) -> u32 {
         return input_value;
     }
 }
+
+/// Asks the user for a String between input_min and input_max in length and returns it.
+pub fn input_string(input_min: usize, input_max: usize) -> String {
+
+    let mut input_value;
+    loop {
+        input_value = String::new();
+        io::stdin()
+            .read_line(&mut input_value)
+            .expect("get_input: Failed to read line");
+
+        if input_value.len() < input_min {
+            println!("Min input length {}", input_min);
+            continue;
+        }
+        if input_value.len() > input_max {
+            println!("Max input length {}", input_max);
+            continue;
+        }
+        return input_value;
+    }
+}
