@@ -1,5 +1,6 @@
 
 use coti::ui;
+use coti::contact::ContactMan;
 use coti::persona::PersonaMan;
 
 fn print_coti_options() {
@@ -56,7 +57,16 @@ fn manage_personas(personaman: &mut PersonaMan) {
     }
 }
 
-fn manage_contacts() {
+fn create_contact(contactman: &mut ContactMan) {
+    println!("Messages from this new contact will be signed using this key.");
+    println!("Contact public key:");
+    let persona_pubk = ui::input_string(1, 32); // TODO use real cryptography (32 bytes = 256 bits)
+    println!("Name (local name for this public key, unique locally):");
+    let local_name = ui::input_string(3, 32); // This must be unique per contact list, it is equal to persona_name by default
+    contactman.new_contact(persona_pubk, local_name);
+}
+
+fn manage_contacts(contactman: &mut ContactMan) {
     print_manage_contacts();
 
     let mut back = false;
@@ -65,7 +75,7 @@ fn manage_contacts() {
 
         match sel_option {
             0 => back = true,
-            1 => println!("ERROR: Create contact is not implemented"),
+            1 => create_contact(contactman),
             2 => println!("ERROR: Delete contact is not implemented"),
             _ => println!("ERROR in manage_contacts"),
         }
@@ -91,6 +101,7 @@ fn main() {
     println!("Coti vPreAlpha\n");
 
     let mut personaman = PersonaMan::new();
+    let mut contactman = ContactMan::new();
     let mut exit_coti = false;
     while !exit_coti {
         print_coti_options();
@@ -98,7 +109,7 @@ fn main() {
 
         match sel_option {
             1 => manage_personas(&mut personaman),
-            2 => manage_contacts(),
+            2 => manage_contacts(&mut contactman),
             3 => publish_message(),
             0 => exit_coti = true,
             _ => println!("ERROR in main menu"),
