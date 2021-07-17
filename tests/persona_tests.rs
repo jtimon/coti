@@ -11,3 +11,10 @@ fn persona_create() {
     pm.new_persona("aaa".to_string());
     pm.print();
 }
+
+#[test]
+fn persona_delete() {
+    let mut pm = PersonaMan::new();
+    pm.new_persona("aaa".to_string());
+    pm.delete_persona("aaa".to_string());
+}

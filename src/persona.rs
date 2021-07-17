@@ -30,8 +30,12 @@ impl PersonaMan {
         self.personas.insert(persona_name.clone(), Persona::new(persona_name));
     }
 
+    pub fn delete_persona(&mut self, persona_name: String) {
+        self.personas.remove(&persona_name);
+    }
+
     pub fn print(&self) {
-        for (name, p) in &self.personas {
+        for (_name, p) in &self.personas {
             println!("persona_name: {}, pubk: {:?}, prik: {:?}", p.persona_name, p.pubk, p.prik);
         }
     }

@@ -41,6 +41,12 @@ fn create_persona(personaman: &mut PersonaMan) {
     personaman.new_persona(ui::input_string(0, 256));
 }
 
+fn delete_persona(personaman: &mut PersonaMan) {
+    println!("The selected persona will be deleted.");
+    println!("Persona name:");
+    personaman.delete_persona(ui::input_string(0, 256));
+}
+
 fn manage_personas(personaman: &mut PersonaMan) {
 
     let mut back = false;
@@ -51,7 +57,7 @@ fn manage_personas(personaman: &mut PersonaMan) {
         match sel_option {
             0 => back = true,
             1 => create_persona(personaman),
-            2 => println!("ERROR: Delete persona is not implemented"),
+            2 => delete_persona(personaman),
             _ => println!("ERROR in manage_personas"),
         }
     }
