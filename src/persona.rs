@@ -9,12 +9,17 @@ use crate::crypto::{
     SignedMsg,
 };
 
+struct Followee {
+    persona_pubk: PubKey,
+}
+
 pub struct Persona {
     pubk: PubKey,
     prik: PrivKey,
     // This is not unique, other personas can always sign with the same name. It can also be changed.
     persona_name: String,
     signed_msgs: Vec<SignedMsg>,
+    followees: HashMap<PubKey, Followee>,
 }
 
 impl Persona {
@@ -22,7 +27,7 @@ impl Persona {
         // TODO use real cryptography
         let prik = PrivKey::new(CryptoAlgorithm::DUMMY).unwrap();
         let pubk = prik.get_pub();
-        Persona{pubk, prik, persona_name, signed_msgs: Vec::new()}
+        Persona{pubk, prik, persona_name, signed_msgs: Vec::new(), followees: HashMap::new()}
     }
 
     pub fn get_name(&self) -> &String {
@@ -41,6 +46,15 @@ impl Persona {
     pub fn get_signed_messages(&self) -> &Vec<SignedMsg> {
         &self.signed_msgs
     }
+
+    pub fn follow(&mut self, persona_pubk: PubKey) {
+        self.followees.insert(persona_pubk.clone(), Followee{persona_pubk});
+    }
+    // pub fn insert_contact(&mut self, persona_name: String, persona_pubk: String, local_name: String) {
+    //     // TODO search first to ask to confirm replace
+    //     self.personas[&persona_name].contacts.insert(local_name.clone(), Contact::new(persona_pubk, local_name));
+    // }
+
 }
 
 pub struct PersonaMan {
