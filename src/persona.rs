@@ -1,5 +1,7 @@
 //! The persona module manages personas.
 
+use std::collections::HashMap;
+
 struct Persona {
     pubk: Vec<u8>, // TODO use real cryptography
     prik: Vec<u8>, // TODO use real cryptography
@@ -16,21 +18,21 @@ impl Persona {
 }
 
 pub struct PersonaMan {
-    personas: Vec<Persona>,
+    personas: HashMap<String, Persona>,
 }
 
 impl PersonaMan {
     pub fn new() -> PersonaMan {
-        PersonaMan{personas: Vec::<Persona>::new()}
+        PersonaMan{personas: HashMap::new()}
     }
 
     pub fn new_persona(&mut self, persona_name: String) {
-        self.personas.push(Persona::new(persona_name));
+        self.personas.insert(persona_name.clone(), Persona::new(persona_name));
     }
 
     pub fn print(&self) {
-        for p in &self.personas {
-            println!("persona_name: {}, prik: {:?}", p.persona_name, p.prik);
+        for (name, p) in &self.personas {
+            println!("persona_name: {}, pubk: {:?}, prik: {:?}", p.persona_name, p.pubk, p.prik);
         }
     }
 }
