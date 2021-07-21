@@ -4,12 +4,16 @@ use std::collections::HashMap;
 
 struct Contact {
 
+    #[allow(dead_code)]
     persona_pubk: String, // TODO use real cryptography
+    #[allow(dead_code)]
     local_name: String, // This must be unique per contact list, it is equal to persona_name by default
     // signed names are public names that can be changed, but once you publicly signed a name,
     // everyone will know you signed it once (with that persona).
+    #[allow(dead_code)]
     signed_name: HashMap<String, String>,
     // Examples of fields could be phone, email, etc
+    #[allow(dead_code)]
     signed: HashMap<String, String>,
 }
 
