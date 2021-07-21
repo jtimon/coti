@@ -2,17 +2,23 @@
 
 use std::collections::HashMap;
 
+use crate::crypto::{
+    CryptoAlgorithm,
+    PrivKey,
+    PubKey,
+};
+
 struct Persona {
-    pubk: Vec<u8>, // TODO use real cryptography
-    prik: Vec<u8>, // TODO use real cryptography
+    pubk: PubKey,
+    prik: PrivKey,
     persona_name: String, // This is not unique, other personas can always sign with the same name
 }
 
 impl Persona {
     pub fn new(persona_name: String) -> Persona {
         // TODO use real cryptography
-        let pubk = Vec::<u8>::new();
-        let prik = Vec::<u8>::new();
+        let prik = PrivKey::new(CryptoAlgorithm::DUMMY).unwrap();
+        let pubk = prik.get_pub();
         Persona{pubk, prik, persona_name}
     }
 }
@@ -36,7 +42,7 @@ impl PersonaMan {
 
     pub fn print(&self) {
         for (_name, p) in &self.personas {
-            println!("persona_name: {}, pubk: {:?}, prik: {:?}", p.persona_name, p.pubk, p.prik);
+            println!("persona_name: {}, pubk: {:?}, pubk (from prik): {:?}", p.persona_name, p.pubk.pubk, p.prik.get_pub().pubk);
         }
     }
 }
