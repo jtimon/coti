@@ -29,7 +29,7 @@ fn dummy_pubkey_verify() {
     let privk = PrivKey::new(CryptoAlgorithm::DUMMY).unwrap();
     let pubk = privk.get_pub();
     let signature = privk.sign("aaa".to_string());
-    assert_eq!(true, pubk.verify(signature));
+    assert_eq!(true, pubk.verify(&signature));
 }
 
 #[test]

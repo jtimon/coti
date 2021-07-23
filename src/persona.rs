@@ -6,12 +6,15 @@ use crate::crypto::{
     CryptoAlgorithm,
     PrivKey,
     PubKey,
+    SignedMsg,
 };
 
 pub struct Persona {
     pubk: PubKey,
     prik: PrivKey,
-    persona_name: String, // This is not unique, other personas can always sign with the same name
+    // This is not unique, other personas can always sign with the same name. It can also be changed.
+    persona_name: String,
+    signed_msgs: Vec<SignedMsg>,
 }
 
 impl Persona {
@@ -19,11 +22,24 @@ impl Persona {
         // TODO use real cryptography
         let prik = PrivKey::new(CryptoAlgorithm::DUMMY).unwrap();
         let pubk = prik.get_pub();
-        Persona{pubk, prik, persona_name}
+        Persona{pubk, prik, persona_name, signed_msgs: Vec::new()}
     }
 
     pub fn get_name(&self) -> &String {
         &self.persona_name
+    }
+
+    pub fn get_pubkey(&self) -> &PubKey {
+        &self.pubk
+    }
+
+    pub fn sign_msg(&mut self, msg: String) {
+        let signed_msg = self.prik.sign(msg);
+        self.signed_msgs.push(signed_msg);
+    }
+
+    pub fn get_signed_messages(&self) -> &Vec<SignedMsg> {
+        &self.signed_msgs
     }
 }
 

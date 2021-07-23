@@ -11,20 +11,16 @@ pub enum CryptoAlgorithm {
 }
 
 #[derive(Clone, PartialEq)]
-pub struct PubKey {
-    pub algo: CryptoAlgorithm,
-    pub pubk: Vec<u8>,
-}
-
-pub struct PrivKey {
-    algo: CryptoAlgorithm,
-    prik: Vec<u8>,
-}
-
 pub struct SignedMsg {
     algo: CryptoAlgorithm,
     msg: String,
     sig: Vec<u8>,
+}
+
+impl SignedMsg {
+    pub fn get_msg(&self) -> &String {
+        &self.msg
+    }
 }
 
 pub struct EncryptedMsg {
@@ -38,9 +34,15 @@ pub struct DecryptedMsg {
     success: bool,
 }
 
+#[derive(Clone, PartialEq)]
+pub struct PubKey {
+    pub algo: CryptoAlgorithm,
+    pub pubk: Vec<u8>,
+}
+
 impl PubKey {
     // TODO Test
-    pub fn verify(&self, signedmsg: SignedMsg) -> bool {
+    pub fn verify(&self, signedmsg: &SignedMsg) -> bool {
         if self.algo != signedmsg.algo {
             return false;
         }
@@ -85,6 +87,11 @@ impl PubKey {
             }
         }
     }
+}
+
+pub struct PrivKey {
+    algo: CryptoAlgorithm,
+    prik: Vec<u8>,
 }
 
 impl PrivKey {
