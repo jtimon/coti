@@ -8,7 +8,7 @@ use crate::crypto::{
     PubKey,
 };
 
-struct Persona {
+pub struct Persona {
     pubk: PubKey,
     prik: PrivKey,
     persona_name: String, // This is not unique, other personas can always sign with the same name
@@ -20,6 +20,10 @@ impl Persona {
         let prik = PrivKey::new(CryptoAlgorithm::DUMMY).unwrap();
         let pubk = prik.get_pub();
         Persona{pubk, prik, persona_name}
+    }
+
+    pub fn get_name(&self) -> &String {
+        &self.persona_name
     }
 }
 
@@ -38,6 +42,14 @@ impl PersonaMan {
 
     pub fn delete_persona(&mut self, persona_name: String) {
         self.personas.remove(&persona_name);
+    }
+
+    pub fn get_persona(&mut self, persona_name: String) -> Option<&Persona> {
+        self.personas.get(&persona_name)
+    }
+
+    pub fn get_mut_persona(&mut self, persona_name: String) -> Option<&mut Persona> {
+        self.personas.get_mut(&persona_name)
     }
 
     pub fn print(&self) {
