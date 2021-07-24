@@ -1,7 +1,7 @@
 
 //! The crypto module acts as a facade for any direct interaction with cryptography.
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum CryptoAlgorithm {
     DUMMY,
     SECP256K1, // TODO Implement SECP256K1
@@ -34,7 +34,7 @@ pub struct DecryptedMsg {
     success: bool,
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Eq, Hash)]
 pub struct PubKey {
     pub algo: CryptoAlgorithm,
     pub pubk: Vec<u8>,
