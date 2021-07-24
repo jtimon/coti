@@ -4,5 +4,6 @@
 
 pub mod contact;
 pub mod crypto;
+pub mod node;
 pub mod persona;
 pub mod ui;
