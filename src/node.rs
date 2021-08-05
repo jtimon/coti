@@ -30,6 +30,7 @@ impl NNode {
 
 pub struct OwnNode {
     node: NNode,
+    // served_personas: HashMap<PubKey, NNode>
     #[allow(dead_code)] // TODO Remove cheating
     prik: PrivKey,
     connections: HashMap<PubKey, NNode>,
@@ -61,5 +62,18 @@ impl OwnNode {
     pub fn disconnect(&mut self, pubk: &PubKey) -> bool {
         self.connections.remove(&pubk);
         true // TODO use real networking
+    }
+
+    // TODO change msg from string to something more low level for msg
+    pub fn send_msg(&mut self, dest_pubk: &PubKey, msg: String) -> bool {
+        match self.connections.get(dest_pubk) {
+            None => false,
+            Some(dest_node) => {
+                let signed_msg = self.prik.sign(msg);
+                let crypt_signed_msg = dest_node.get_pubkey().encrypt(signed_msg);
+                // dest_node.get_address()
+                true // TODO use real networking
+            },
+        }
     }
 }
